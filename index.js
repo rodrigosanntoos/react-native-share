@@ -1,9 +1,4 @@
-/*
- *
- * @format
- * @flow
- *
- */
+// @flow
 
 import * as React from 'react';
 import {
@@ -16,7 +11,6 @@ import {
   ActionSheetIOS,
   PermissionsAndroid,
 } from 'react-native';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 import Overlay from './components/Overlay';
 import Sheet from './components/Sheet';
@@ -42,8 +36,8 @@ type Props = {
   visible: boolean,
   onCancel: () => void,
   children: React.Node,
-  style?: ViewStyleProp,
-  overlayStyle?: ViewStyleProp,
+  style?: {},
+  overlayStyle?: {},
 };
 
 const shareSheetStyle = { flex: 1 };
@@ -106,7 +100,7 @@ type MultipleOptions = {
 };
 
 type OpenReturn = { app?: string, dismissedAction?: boolean };
-type ShareSingleReturn = { message: string, isInstalled?: boolean };
+type ShareSingleReturn = { message: string };
 
 const requireAndAskPermissions = async (options: Options | MultipleOptions): Promise<any> => {
   if ((options.url || options.urls) && Platform.OS === 'android') {
@@ -155,7 +149,7 @@ const requireAndAskPermissions = async (options: Options | MultipleOptions): Pro
 
 class RNShare {
   static Button: any;
-  static ShareSheet: RNShare.ShareSheet;
+  static ShareSheet: React.Element<*>;
   static Overlay: any;
   static Sheet: any;
   static Social = {
@@ -164,10 +158,18 @@ class RNShare {
     TWITTER: NativeModules.RNShare.TWITTER || 'twitter',
     WHATSAPP: NativeModules.RNShare.WHATSAPP || 'whatsapp',
     INSTAGRAM: NativeModules.RNShare.INSTAGRAM || 'instagram',
+    INSTAGRAM_STORIES: NativeModules.RNShare.INSTAGRAM_STORIES || 'instagram-stories',
     GOOGLEPLUS: NativeModules.RNShare.GOOGLEPLUS || 'googleplus',
     EMAIL: NativeModules.RNShare.EMAIL || 'email',
     PINTEREST: NativeModules.RNShare.PINTEREST || 'pinterest',
-    LINKEDIN: NativeModules.RNShare.LINKEDIN || 'linkedin',
+  };
+
+  static InstagramStories = {
+    SHARE_BACKGROUND_IMAGE: NativeModules.RNShare.SHARE_BACKGROUND_IMAGE || 'shareBackgroundImage',
+    SHARE_BACKGROUND_VIDEO: NativeModules.RNShare.SHARE_BACKGROUND_VIDEO || 'shareBackgroundVideo',
+    SHARE_STICKER_IMAGE: NativeModules.RNShare.SHARE_STICKER_IMAGE || 'shareStickerImage',
+    SHARE_BACKGROUND_AND_STICKER_IMAGE:
+      NativeModules.RNShare.SHARE_BACKGROUND_AND_STICKER_IMAGE || 'shareBackgroundAndStickerImage',
   };
 
   static open(options: Options | MultipleOptions): Promise<OpenReturn> {

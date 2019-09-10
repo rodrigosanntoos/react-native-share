@@ -47,10 +47,6 @@ public abstract class ShareIntent {
             this.getIntent().putExtra(Intent.EXTRA_SUBJECT, options.getString("subject"));
         }
 
-        if (ShareIntent.hasValidKey("email", options)) {
-            this.getIntent().putExtra(Intent.EXTRA_EMAIL, new String[] { options.getString("email") });
-        }
-
         if (ShareIntent.hasValidKey("title", options)) {
             this.chooserTitle = options.getString("title");
         }
@@ -59,20 +55,6 @@ public abstract class ShareIntent {
         if (ShareIntent.hasValidKey("message", options)) {
             message = options.getString("message");
         }
-
-        String socialType  = "";
-        if (ShareIntent.hasValidKey("social", options)) {
-            socialType = options.getString("social");
-        }
-        if (socialType.equals("whatsapp")) {
-            String whatsAppNumber = options.getString("whatsAppNumber");
-            if (!whatsAppNumber.isEmpty()) {
-                String chatAddress = whatsAppNumber + "@s.whatsapp.net";
-                this.getIntent().putExtra("jid", chatAddress);
-            }
-        }
-
-
         if (ShareIntent.hasValidKey("urls", options)) {
 
             ShareFiles fileShare = getFileShares(options);

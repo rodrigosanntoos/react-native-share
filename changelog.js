@@ -1,18 +1,17 @@
 #!/usr/bin/env node
 
 const git = require('simple-git');
-const generate_changelog = require('generate-changelog');
+const changelog = require('generate-changelog');
 const fs = require('fs');
 const idx = require('idx');
 const argv = require('minimist')(process.argv.slice(1));
 
-// eslint-disable-next-line handle-callback-err
 git().tags((err, tags) => {
   const currentChangelog = fs.readFileSync('./CHANGELOG.md');
-  const matched = tags.latest.match(/v\d+.\d+.\d+-(\d+)/);
+  const matched = tags.latest != null ? tags.latest.match(/v\d+.\d+.\d+-(\d+)/) : 'v0.0.1-0';
   const build = (idx(matched, _ => Number(_[1])) || 0) + 1;
 
-  generate_changelog
+  changelog
     .generate({
       major: argv.major,
       minor: argv.minor,

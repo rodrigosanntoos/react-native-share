@@ -1,11 +1,10 @@
 //
-//  EmailShare.h
+//  InstagramStories.h
 //  RNShare
 //
-//  Created by Diseño Uno BBCL on 23-07-16.
-//  Copyright © 2016 Facebook. All rights reserved.
+//  Created by Nikita Logachev on 13.02.2019.
+//  link: https://github.com/loga4
 //
-
 
 #import <UIKit/UIKit.h>
 // import RCTConvert
@@ -48,8 +47,7 @@
 #else
 #import "React/RCTUtils.h"   // Required when used as a Pod in a Swift project
 #endif
-#import <MessageUI/MessageUI.h>
-@interface EmailShare : NSObject <MFMailComposeViewControllerDelegate>
+@interface InstagramStories : NSObject <RCTBridgeModule>
 
 - (void *) shareSingle:(NSDictionary *)options failureCallback:(RCTResponseErrorBlock)failureCallback successCallback:(RCTResponseSenderBlock)successCallback;
 @end

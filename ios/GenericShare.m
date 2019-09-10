@@ -13,11 +13,10 @@
 - (void)shareSingle:(NSDictionary *)options
     failureCallback:(RCTResponseErrorBlock)failureCallback
     successCallback:(RCTResponseSenderBlock)successCallback
-    serviceType:(NSString*)serviceType
-    inAppBaseUrl:(NSString *)inAppBaseUrl {
+    serviceType:(NSString*)serviceType {
 
     NSLog(@"Try open view");
-    if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:inAppBaseUrl]]) {
+    if([SLComposeViewController isAvailableForServiceType:serviceType]) {
 
         SLComposeViewController *composeController = [SLComposeViewController  composeViewControllerForServiceType:serviceType];
 
@@ -46,7 +45,7 @@
         }
 
 
-        UIViewController *ctrl = RCTPresentedViewController();
+        UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
         [ctrl presentViewController:composeController animated:YES completion:Nil];
         successCallback(@[]);
       } else {
@@ -54,7 +53,7 @@
         NSDictionary *userInfo = @{NSLocalizedFailureReasonErrorKey: NSLocalizedString(errorMessage, nil)};
         NSError *error = [NSError errorWithDomain:@"com.rnshare" code:1 userInfo:userInfo];
 
-        NSLog(@"%@", errorMessage);
+        NSLog(errorMessage);
         failureCallback(error);
 
         NSString *escapedString = [options[@"message"] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
@@ -76,10 +75,8 @@
       NSURL *schemeURL = [NSURL URLWithString:scheme];
 
       if ([application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
-          if (@available(iOS 10.0, *)) {
-              [application openURL:schemeURL options:@{} completionHandler:nil];
-          }
-          NSLog(@"Open %@", schemeURL);
+          [application openURL:schemeURL options:@{} completionHandler:nil];
+          NSLog(@"Open %@: %d", schemeURL);
       }
 
   }
